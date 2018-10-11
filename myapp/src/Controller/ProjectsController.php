@@ -132,6 +132,8 @@ class ProjectsController extends AppController
 
         $reader = new Reader();
         $spreadsheet = $reader->load('C:\workspace\temp\project_infomation.xlsx');        
+        
+        //Sheet1
         $sheet = $spreadsheet->getActiveSheet();
         $rowcnt = 2;
 
@@ -146,7 +148,14 @@ class ProjectsController extends AppController
             $sheet->setCellValue('H'.$rowcnt, $project->probability_orders);
             $rowcnt++;
         }
-                
+        
+        //Sheet2
+        $book->getSheetByName('Sheet2');
+        $projects = $this->Projects->find();
+        $projects->select(['order_planed_month','segment','probability_orders',
+                            'order_amount_sum' => $query->func()->sum('estimate_amount')]);
+
+
         
         $writer = new Writer($spreadsheet);
         header('Content-type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
