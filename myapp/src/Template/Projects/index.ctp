@@ -8,7 +8,15 @@
     <ul class="side-nav">
         <li class="heading"><?= __('Actions') ?></li>
         <li><?= $this->Html->link(__('新規案件登録'), ['action' => 'add']) ?></li>
+        <li><?= $this->Html->link(__('案件情報　Excel出力'), 
+                                        ['action' => 'exportExcel']) ?></li>
+
+        <!-- <li><?= $this->Html->link(__('案件情報　Excel出力'), 
+                                        ['action' => 'exportExcel',
+                                        'target' => 'downloader']) ?></li> -->
+
     </ul>
+    <iframe id="downloader" width="0" height="0" frameborder="0"></iframe>
 </nav>
 <div class="projects index large-10 medium-7 columns content">
     <h3><?= __('Projects') ?></h3>
@@ -44,8 +52,8 @@
                 <td><?= h($project->completion_planed_month->format('Y年m月')) ?></td>
                 <td><?= h($project->completion_planed_term) ?></td>
                 <td class="actions">
-                    <?= $this->Html->link(__('View'), ['action' => 'view', $project->id]) ?>
-                    <?= $this->Html->link(__('Edit'), ['action' => 'edit', $project->id]) ?>
+                    <?= $this->Html->link(__('View'), ['action' => 'view', $project->id]) ?><br/>
+                    <?= $this->Html->link(__('Edit'), ['action' => 'edit', $project->id]) ?><br/>
                     <?= $this->Form->postLink(__('Delete'), ['action' => 'delete', $project->id], ['confirm' => __('Are you sure you want to delete # {0}?', $project->id)]) ?>
                 </td>
             </tr>

@@ -3,9 +3,10 @@ namespace App\Controller;
 
 use App\Controller\AppController;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
+use \PhpOffice\PhpSpreadsheet\Cell\Coordinate as Cell;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx as Writer;
 use PhpOffice\PhpSpreadsheet\Reader\Xlsx as Reader;
-
+use PhpOffice\PhpSpreadsheet\Shared\Date as PhpOfficeDate;
 /**
  * Projects Controller
  *
@@ -42,6 +43,12 @@ class ProjectsController extends AppController
         $this->set('arr_disp_name', self::COLUMN_DISP_NAME);
     }
 
+    public function index_exportExcel()
+    {
+        $this->Flash->success(__('Excel出力中です。'));
+        return $this->redirect(['action' => 'index']);
+    }
+   
     /**
      * View method
      *
@@ -130,11 +137,11 @@ class ProjectsController extends AppController
         //案件情報の取得
         $projects = $this->Projects->find();
 
-        $reader = new Reader();
+        $reader = new Reader('Excel2007');
         $spreadsheet = $reader->load('C:\workspace\temp\project_infomation.xlsx');        
         
         //Sheet1
-        $sheet = $spreadsheet->getActiveSheet();
+        $sheet = $spreadsheet->getSheetByName('Sheet1');
         $rowcnt = 2;
 
         foreach ($projects as $project) {
@@ -148,16 +155,68 @@ class ProjectsController extends AppController
             $sheet->setCellValue('H'.$rowcnt, $project->probability_orders);
             $rowcnt++;
         }
+
+        //Sheet2,sheet3
+        $sheet2 = $spreadsheet->getSheetByName('Sheet2');
+        $sheet3 = $spreadsheet->getSheetByName('Sheet3');
         
-        //Sheet2
-        $book->getSheetByName('Sheet2');
-        $projects = $this->Projects->find();
         $projects->select(['order_planed_month','segment','probability_orders',
-                            'order_amount_sum' => $query->func()->sum('estimate_amount')]);
+                            'order_amount_sum' => $projects->func()->sum('estimate_amount')])
+                    ->group(['order_planed_month','segment','probability_orders'])
+                    ->order(['probability_orders','order_planed_month','segment']);
+        $rowcnt = 2;
 
-
+        foreach ($projects as $project) {
+            $excel_month = PhpOfficeDate::PHPToExcel($project->order_planed_month);
+            $sheet2->setCellValue('A'.$rowcnt, $excel_month);
+            $sheet2->setCellValue('B'.$rowcnt, $project->segment);
+            $sheet2->setCellValue('C'.$rowcnt, $project->probability_orders);
+            $sheet2->setCellValue('D'.$rowcnt, $project->order_amount_sum);
         
+
+            // if ($rowcnt > 2) {
+            //     //Aの列は書式をコピー
+            //     $sheet3->duplicateStyle(
+            //         $sheet3->getStyle('A2'),
+            //         'A'.$rowcnt
+            //     );
+            //     //E以降は数式をコピー
+            //     for ($col=4; $col<=43; $col++ ){
+            //         //コピー元(2行目)より数式取得
+            //         $cellValue = $sheet3->getCellByColumnAndRow($col,2)->getValue();
+            //         //コピー元(2行目)より書式取得
+            //         $cellStyle = $sheet3->getStyleByColumnAndRow($col,2);
+                    
+            //         //カラムを数値から文字列（A,B,C...）に変換
+            //         $columnLetter = Cell::stringFromColumnIndex($col);
+
+            //         //数式コピー
+            //         $sheet3->setCellValue($columnLetter.$rowcnt, $cellValue);    
+            //         //書式コピー
+            //         //$sheet3->duplicateStyle($cellStyle, $columnLetter.$rowcnt);
+            //     }
+                
+            // }
+            
+            $sheet3->setCellValue('A'.$rowcnt, $excel_month);
+            $sheet3->setCellValue('B'.$rowcnt, $project->segment);
+            $sheet3->setCellValue('C'.$rowcnt, $project->probability_orders);
+            $sheet3->setCellValue('D'.$rowcnt, $project->order_amount_sum);
+            $rowcnt++;
+        }
+
+        //sheet4
+        $sheet3 = $spreadsheet->getSheetByName('Sheet3');
+        
+        $projects->select(['order_planed_month','segment','probability_orders',
+                            'order_amount_sum' => $projects->func()->sum('estimate_amount')])
+                    ->group(['order_planed_month','segment','probability_orders'])
+                    ->order(['probability_orders','order_planed_month','segment']);
+        $rowcnt = 2; 
+
         $writer = new Writer($spreadsheet);
+        
+        
         header('Content-type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
         header('Content-Disposition: attachment;filename="anken.xlsx"');
         header('Cache-Control: max-age=0');
