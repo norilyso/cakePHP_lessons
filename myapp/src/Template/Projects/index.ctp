@@ -8,9 +8,10 @@
     <ul class="side-nav">
         <li class="heading"><?= __('Actions') ?></li>
         <li><?= $this->Html->link(__('新規案件登録'), ['action' => 'add']) ?></li>
-        <li><?= $this->Html->link(__('案件情報　Excel出力'), 
-                                        ['action' => 'exportExcel']) ?></li>
-
+        <li><?= $this->Form->postLink(__('案件情報　Excel出力'), 
+                                    ['action' => 'exportExcel'], 
+                                    ['confirm' => __('Excel出力します。\n処理が完了するまでしばらくお待ちください。')]) ?></li>
+        
         <!-- <li><?= $this->Html->link(__('案件情報　Excel出力'), 
                                         ['action' => 'exportExcel',
                                         'target' => 'downloader']) ?></li> -->

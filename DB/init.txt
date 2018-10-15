@@ -1,0 +1,17 @@
+create database cakephp_lesson;
+grant all on cakephp_lesson.* to dbuser@localhost identified by '6372';
+use cakephp_lesson
+
+create table posts(
+	id int unsigned auto_increment primary key,
+	title varchar(255),
+	body text,
+	created datetime default null,
+	modified datetime default null
+);
+insert into posts (title, body, created) values
+('title 1', 'body 1', now()),
+('title 2', 'body 2', now()),
+('title 3', 'body 3', now());
+
+select * from posts;

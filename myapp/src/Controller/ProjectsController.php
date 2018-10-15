@@ -42,12 +42,6 @@ class ProjectsController extends AppController
         $this->set(compact('projects'));
         $this->set('arr_disp_name', self::COLUMN_DISP_NAME);
     }
-
-    public function index_exportExcel()
-    {
-        $this->Flash->success(__('Excel出力中です。'));
-        return $this->redirect(['action' => 'index']);
-    }
    
     /**
      * View method
@@ -133,7 +127,6 @@ class ProjectsController extends AppController
 
     public function exportExcel()
     {
-
         //案件情報の取得
         $projects = $this->Projects->find();
 

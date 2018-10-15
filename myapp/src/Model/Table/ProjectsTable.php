@@ -22,7 +22,7 @@ use Cake\Validation\Validator;
  */
 class ProjectsTable extends Table
 {
-
+ 
     /**
      * Initialize method
      *
@@ -39,7 +39,7 @@ class ProjectsTable extends Table
 
         $this->addBehavior('Timestamp');
     }
-
+    
     /**
      * Default validation rules.
      *
@@ -110,7 +110,7 @@ class ProjectsTable extends Table
         return $validator;
     }
 
-    // public function getColumnDispName($column_name){
-    //     return COLUMN_DISP_NAME[$column_name];
+    // public function getColumnDisplayName($column_name){
+    //     return self::COLUMN_DISP_NAME[$column_name];
     // }
 }
