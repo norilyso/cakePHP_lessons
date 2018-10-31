@@ -4,6 +4,11 @@
  * @var \App\Model\Entity\Project[]|\Cake\Collection\CollectionInterface $projects
  */
 ?>
+<?php
+$this->extend('/Layout/TwitterBootstrap/dashboard');
+
+$this->append('tb_sidebar'); 
+?>
 <nav class="large-2 medium-4 columns" id="actions-sidebar">
     <ul class="side-nav">
         <li class="heading"><?= __('Actions') ?></li>
@@ -17,11 +22,15 @@
                                         'target' => 'downloader']) ?></li> -->
 
     </ul>
-    <iframe id="downloader" width="0" height="0" frameborder="0"></iframe>
+    
 </nav>
+<?php 
+$this->end(); 
+?>
+
 <div class="projects index large-10 medium-7 columns content">
-    <h3><?= __('Projects') ?></h3>
-    <table cellpadding="0" cellspacing="0">
+    <h3><?= __('案件一覧') ?></h3>
+    <table cellpadding="0" cellspacing="0" class="table">
         <thead>
             <tr>
                 <th scope="col"><?= $this->Paginator->sort('project_number' ,$arr_disp_name['project_number']) ?></th>

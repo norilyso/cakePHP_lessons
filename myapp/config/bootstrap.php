@@ -197,3 +197,8 @@ Type::build('timestamp')
 //Inflector::rules('irregular', ['red' => 'redlings']);
 //Inflector::rules('uninflected', ['dontinflectme']);
 //Inflector::rules('transliteration', ['/å/' => 'aa']);
+
+
+
+//bootstrapを読み込む  Add 2018.10.31 Noriyuki Karashima
+Plugin::load('BootstrapUI');

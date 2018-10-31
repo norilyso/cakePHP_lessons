@@ -29,26 +29,46 @@ $cakeDescription = 'CakePHP: the rapid development php framework';
     <?= $this->Html->css('base.css') ?>
     <?= $this->Html->css('style.css') ?>
 
+    <?php 
+    //Add 2018.10.31 Noriyuki Karashima ↓ 
+    ?>
+    <!-- jQuery -->
+    <script type="text/javascript" src="//code.jquery.com/jquery-1.11.0.min.js"></script>
+    <script type="text/javascript" src="//code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
+
+    <!-- bootstrap framework -->
+    <?= $this->Html->css('/bootstrap/css/bootstrap.css') ?>
+    <?= $this->Html->script('/bootstrap/js/bootstrap.js') ?>
+    <?php 
+    //Add 2018.10.31 Noriyuki Karashima ↑ 
+    ?>
+
     <?= $this->fetch('meta') ?>
     <?= $this->fetch('css') ?>
     <?= $this->fetch('script') ?>
+
+
 </head>
 <body>
+
     <nav class="top-bar expanded" data-topbar role="navigation">
         <ul class="title-area large-2 medium-4 columns">
             <li class="name">
                 <h1><a href=""><?= $this->fetch('title') ?></a></h1>
             </li>
         </ul>
-        <div class="top-bar-section">
+
+        <div class="top-bar-section border-1">
             <ul class="right">
                 <li><a target="_blank" href="https://book.cakephp.org/3.0/">Documentation</a></li>
                 <li><a target="_blank" href="https://api.cakephp.org/3.0/">API</a></li>
             </ul>
         </div>
     </nav>
+
+
     <?= $this->Flash->render() ?>
-    <div class="container clearfix">
+    <div class="container-fluid" >
         <?= $this->fetch('content') ?>
     </div>
     <footer>
